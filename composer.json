@@ -1,5 +1,5 @@
 {
-	"name": "systemsdk/docker-apache-php-symfony",
+	"name": "Platform",
 	"type": "project",
 	"description": "Docker symfony environment",
 	"keywords": [
@@ -11,13 +11,13 @@
 		"MySQL",
 		"RabbitMQ"
 	],
-	"homepage": "https://github.com/systemsdk/docker-apache-php-symfony",
+	"homepage": "https://github.com/rami-aouinti/PlatformBeta",
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Dmitriy Kravtsov",
-			"email": "dmitriy.kravtsov@systemsdk.com",
-			"homepage": "https://github.com/dimadeush",
+			"name": "Mohamed Rami Aouinti",
+			"email": "rami.aouinti@gmail.com",
+			"homepage": "https://github.com/rami-aouinti",
 			"role": "Developer"
 		}
 	],
@@ -162,6 +162,6 @@
 		}
 	},
 	"support": {
-		"issues": "https://github.com/systemsdk/docker-apache-php-symfony/issues"
+		"issues": "https://github.com/rami-aouinti/PlatformBeta/issues"
 	}
 }

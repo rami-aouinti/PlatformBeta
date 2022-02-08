@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile index{% endblock %}
+
+{% block body %}
+    <h1>Profile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Birthday</th>
+                <th>Nationality</th>
+                <th>Email</th>
+                <th>Image</th>
+                <th>Telefone</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>Postcode</th>
+                <th>Street</th>
+                <th>Homenumber</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td>{{ profile.id }}</td>
+                <td>{{ profile.firstname }}</td>
+                <td>{{ profile.lastname }}</td>
+                <td>{{ profile.birthday ? profile.birthday|date('Y-m-d') : '' }}</td>
+                <td>{{ profile.nationality }}</td>
+                <td>{{ profile.email }}</td>
+                <td>{{ profile.image }}</td>
+                <td>{{ profile.telefone }}</td>
+                <td>{{ profile.country }}</td>
+                <td>{{ profile.state }}</td>
+                <td>{{ profile.postcode }}</td>
+                <td>{{ profile.street }}</td>
+                <td>{{ profile.homenumber }}</td>
+                <td>{{ profile.start ? profile.start|date('Y-m-d') : '' }}</td>
+                <td>{{ profile.end ? profile.end|date('Y-m-d') : '' }}</td>
+                <td>{{ profile.active ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('profile_show', {'id': profile.id}) }}">show</a>
+                    <a href="{{ path('profile_edit', {'id': profile.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="17">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('profile_new') }}">Create new</a>
+{% endblock %}

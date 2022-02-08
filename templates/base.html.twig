@@ -11,15 +11,7 @@
         <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css">
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-        <style>
-            .main-footer {
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                text-align: center;
-            }
-        </style>
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -29,8 +21,8 @@
     <div class="wrapper">
         {{ include('layout/nav.html.twig') }}
         {% block body %}{% endblock %}
-        {{ include('layout/footer.html.twig') }}
     </div>
+    {{ include('layout/footer.html.twig') }}
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

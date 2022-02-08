@@ -4,12 +4,20 @@ namespace App\Entity;
 
 use App\Repository\ProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\Timestampable;
 
 /**
  * @ORM\Entity(repositoryClass=ProfileRepository::class)
+ *
+ * @ORM\HasLifecycleCallbacks
  */
 class Profile
 {
+    /*
+     * Timestampable trait
+     */
+    use Timestampable;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -100,6 +108,11 @@ class Profile
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function getFirstname(): ?string

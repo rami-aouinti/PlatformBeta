@@ -61,10 +61,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="members")
+     */
+    private $projects;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Timework::class, mappedBy="user")
+     */
+    private $timeworks;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+        $this->timeworks = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -237,6 +249,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getAuthor() === $this) {
                 $comment->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeMember($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Timework[]
+     */
+    public function getTimeworks(): Collection
+    {
+        return $this->timeworks;
+    }
+
+    public function addTimework(Timework $timework): self
+    {
+        if (!$this->timeworks->contains($timework)) {
+            $this->timeworks[] = $timework;
+            $timework->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimework(Timework $timework): self
+    {
+        if ($this->timeworks->removeElement($timework)) {
+            // set the owning side to null (unless already changed)
+            if ($timework->getUser() === $this) {
+                $timework->setUser(null);
             }
         }
 

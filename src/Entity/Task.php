@@ -64,11 +64,22 @@ class Task
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tickets")
+     */
+    private $project;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Timework::class, mappedBy="ticket")
+     */
+    private $timeworks;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
         $this->members = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->timeworks = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -201,6 +212,48 @@ class Task
             // set the owning side to null (unless already changed)
             if ($comment->getTask() === $this) {
                 $comment->setTask(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Timework[]
+     */
+    public function getTimeworks(): Collection
+    {
+        return $this->timeworks;
+    }
+
+    public function addTimework(Timework $timework): self
+    {
+        if (!$this->timeworks->contains($timework)) {
+            $this->timeworks[] = $timework;
+            $timework->setTicket($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimework(Timework $timework): self
+    {
+        if ($this->timeworks->removeElement($timework)) {
+            // set the owning side to null (unless already changed)
+            if ($timework->getTicket() === $this) {
+                $timework->setTicket(null);
             }
         }
 

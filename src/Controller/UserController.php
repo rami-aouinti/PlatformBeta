@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -29,8 +30,11 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
+        $profile = new Profile();
+        $profile->setUser($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
+            $entityManager->persist($profile);
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);

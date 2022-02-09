@@ -10,15 +10,65 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/profile')]
 class ProfileController extends AbstractController
 {
-    #[Route('/', name: 'profile_index', methods: ['GET'])]
-    public function index(ProfileRepository $profileRepository): Response
+    #[Route('/', name: 'profile_index', methods: ['GET', 'POST'])]
+    public function index(
+        Request $request,
+        ProfileRepository $profileRepository,
+        Security $security,
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger
+    ): Response
     {
-        return $this->render('profile/index.html.twig', [
-            'profiles' => $profileRepository->findAll(),
+        $user = $security->getUser();
+        $profile = $profileRepository->findOneBy([
+            'user' => $user
+        ]);
+
+        $form = $this->createForm(ProfileType::class, $profile);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('avatar_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $profile->setImage($newFilename);
+            }
+
+            $entityManager->persist($profile);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('profile_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('profile/index.html.twig', [
+            'user' => $user,
+            'profile' => $profile,
+            'form' => $form,
         ]);
     }
 

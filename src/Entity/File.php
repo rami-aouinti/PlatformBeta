@@ -47,9 +47,15 @@ class File
      */
     private $tasks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="files")
+     */
+    private $projects;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -120,6 +126,33 @@ class File
     {
         if ($this->tasks->removeElement($task)) {
             $task->removeFile($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addFile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeFile($this);
         }
 
         return $this;

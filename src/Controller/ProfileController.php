@@ -27,6 +27,7 @@ class ProfileController extends AbstractController
         SluggerInterface $slugger
     ): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $security->getUser();
         $profile = $profileRepository->findOneBy([
             'user' => $user
@@ -75,6 +76,7 @@ class ProfileController extends AbstractController
     #[Route('/new', name: 'profile_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $profile = new Profile();
         $form = $this->createForm(ProfileType::class, $profile);
         $form->handleRequest($request);
@@ -95,6 +97,7 @@ class ProfileController extends AbstractController
     #[Route('/{id}', name: 'profile_show', methods: ['GET'])]
     public function show(Profile $profile): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('profile/show.html.twig', [
             'profile' => $profile,
         ]);
@@ -103,6 +106,7 @@ class ProfileController extends AbstractController
     #[Route('/{id}/edit', name: 'profile_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Profile $profile, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(ProfileType::class, $profile);
         $form->handleRequest($request);
 
@@ -121,6 +125,7 @@ class ProfileController extends AbstractController
     #[Route('/{id}', name: 'profile_delete', methods: ['POST'])]
     public function delete(Request $request, Profile $profile, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($this->isCsrfTokenValid('delete'.$profile->getId(), $request->request->get('_token'))) {
             $entityManager->remove($profile);
             $entityManager->flush();

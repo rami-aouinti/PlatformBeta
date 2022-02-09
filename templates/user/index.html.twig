@@ -3,10 +3,25 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
-
-    <div class="row">
-        {% for user in users %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Members</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+                    <li class="breadcrumb-item active">Members</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            {% for user in users %}
                 <!-- /.col -->
                 <div class="col-md-4">
                     <!-- Widget: user widget style 2 -->
@@ -14,32 +29,27 @@
                         <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header bg-warning">
                             <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src="{{ asset('adminlte/dist/img/user7-128x128.jpg') }}" alt="User Avatar">
+                                <img class="img-circle elevation-2" src="{{ asset('uploads/avatar/' ~ user.profile.image) }}" alt="User Avatar">
                             </div>
                             <!-- /.widget-user-image -->
                             <h3 class="widget-user-username">{{ user.profile.firstname }} {{ user.profile.lastname }}</h3>
-                            <h5 class="widget-user-desc">Lead Developer</h5>
+                            <h5 class="widget-user-desc">{{ user.profile.title }}</h5>
                         </div>
                         <div class="card-footer p-0">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Projects <span class="float-right badge bg-primary">31</span>
+                                        Projects <span class="float-right badge bg-primary">{{ user.projects|length }}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Tasks <span class="float-right badge bg-info">5</span>
+                                        Tasks <span class="float-right badge bg-info">{{ user.tasks|length }}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Completed Projects <span class="float-right badge bg-success">12</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        Followers <span class="float-right badge bg-danger">842</span>
+                                        Completed Projects <span class="float-right badge bg-success">{{ user.projects|length }}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -48,10 +58,12 @@
                     <!-- /.widget-user -->
                 </div>
 
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+        </div>
     </div>
+</section>
 {% endblock %}

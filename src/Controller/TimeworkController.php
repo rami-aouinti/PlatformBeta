@@ -10,21 +10,43 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/timework')]
 class TimeworkController extends AbstractController
 {
-    #[Route('/', name: 'timework_index', methods: ['GET'])]
-    public function index(TimeworkRepository $timeworkRepository): Response
+    #[Route('/', name: 'timework_index', methods: ['GET', 'POST'])]
+    public function index(
+        TimeworkRepository $timeworkRepository,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security
+    ): Response
     {
-        return $this->render('timework/index.html.twig', [
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $security->getUser();
+        $timework = new Timework();
+        $timework->setUser($user);
+        $form = $this->createForm(TimeworkType::class, $timework);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($timework);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('timework_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('timework/index.html.twig', [
             'timeworks' => $timeworkRepository->findAll(),
+            'form' => $form,
         ]);
     }
 
     #[Route('/new', name: 'timework_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $timework = new Timework();
         $form = $this->createForm(TimeworkType::class, $timework);
         $form->handleRequest($request);
@@ -45,6 +67,7 @@ class TimeworkController extends AbstractController
     #[Route('/{id}', name: 'timework_show', methods: ['GET'])]
     public function show(Timework $timework): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('timework/show.html.twig', [
             'timework' => $timework,
         ]);
@@ -53,6 +76,7 @@ class TimeworkController extends AbstractController
     #[Route('/{id}/edit', name: 'timework_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Timework $timework, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(TimeworkType::class, $timework);
         $form->handleRequest($request);
 
@@ -71,6 +95,7 @@ class TimeworkController extends AbstractController
     #[Route('/{id}', name: 'timework_delete', methods: ['POST'])]
     public function delete(Request $request, Timework $timework, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($this->isCsrfTokenValid('delete'.$timework->getId(), $request->request->get('_token'))) {
             $entityManager->remove($timework);
             $entityManager->flush();

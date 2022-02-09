@@ -17,7 +17,6 @@ use App\Entity\Trait\Timestampable;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     /*
      * Timestampable trait
      */
@@ -71,12 +70,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $timeworks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="members")
+     */
+    private $events;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->timeworks = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -307,6 +312,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($timework->getUser() === $this) {
                 $timework->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeMember($this);
         }
 
         return $this;

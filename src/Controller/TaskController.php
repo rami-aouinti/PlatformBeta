@@ -30,17 +30,31 @@ class TaskController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/', name: 'task_index', methods: ['GET'])]
+    #[Route('/', name: 'task_index', methods: ['GET', 'POST'])]
     public function index(
         TaskRepository $taskRepository,
         StatusRepository $statusRepository,
         PaginatorInterface $paginator,
-        Request $request): Response
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('task/index.html.twig', [
+        $task = new Task();
+        $task->setAuthor($this->security->getUser());
+        $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($task);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('task_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('task/index.html.twig', [
             'tasks' => $taskRepository->listAll($paginator, $request),
             'status' => $statusRepository->findAll(),
+            'form' => $form,
         ]);
     }
 

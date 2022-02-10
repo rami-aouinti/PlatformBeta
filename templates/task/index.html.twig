@@ -3,23 +3,19 @@
 {% block title %}Task index{% endblock %}
 
 {% block body %}
-<div class="content-wrapper kanban">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h1>Tasks</h1>
-                </div>
-                <div class="col-sm-6 d-none d-sm-block">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Tasks</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    {% include 'layout/header.html.twig' with
+        {
+            'data': tasks,
+            'page': 'Tasks',
+            'path': 'home',
+            'filter': true,
+            'buttonNew': 'New Task',
+            'form': form
+        }
+    %}
+<!-- Main content -->
+<section class="content">
+    <div class="content-wrapper kanban">
     <section class="content pb-3">
         <div class="container-fluid h-100">
             {% for statusElement in status %}
@@ -36,7 +32,7 @@
                             <div class="card-header">
                                 <h5 class="card-title">{{ task.title }}</h5>
                                 <div class="card-tools">
-                                    <a href="{{ path('task_show', {'id': task.id}) }}" class="btn btn-tool btn-link">#{{ task.id }}</a>
+                                    {{ include ('task/modal.html.twig', {'task' : task}) }}
                                     <a href="{{ path('task_edit', {'id': task.id}) }}" class="btn btn-tool">
                                         <i class="fas fa-pen"></i>
                                     </a>
@@ -55,4 +51,5 @@
         </div>
     </section>
 </div>
+</section>
 {% endblock %}

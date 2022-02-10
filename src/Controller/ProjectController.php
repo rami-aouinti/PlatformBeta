@@ -29,12 +29,23 @@ class ProjectController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/', name: 'project_index', methods: ['GET'])]
-    public function index(ProjectRepository $projectRepository,PaginatorInterface $paginator, Request $request): Response
+    #[Route('/', name: 'project_index', methods: ['GET', 'POST'])]
+    public function index(ProjectRepository $projectRepository,PaginatorInterface $paginator, Request $request, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('project/index.html.twig', [
+        $project = new Project();
+        $form = $this->createForm(ProjectType::class, $project);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($project);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('project_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('project/index.html.twig', [
             'projects' => $projectRepository->listAll($paginator, $request),
+            'form' => $form,
         ]);
     }
 

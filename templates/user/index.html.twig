@@ -3,31 +3,15 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-2">
-                <div class="info-box">
-                    <div class="info-box-content">
-                        <h1> Members </h1>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-            </div>
-            <div class="col-sm-8">
-                {{ knp_pagination_filter(users, {
-                    'u.id': 'Id',
-                }, {}, {}, 'layout/filter.html.twig') }}
-            </div>
-            <div class="col-sm-2">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
-                    <li class="breadcrumb-item active">Members</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
+    {% include 'layout/header.html.twig' with
+        {
+            'data': users,
+            'page': 'Members',
+            'path': 'home',
+            'filter': true,
+            'buttonNew': false
+        }
+    %}
 <section class="content">
     <div class="container-fluid">
         <div class="row">

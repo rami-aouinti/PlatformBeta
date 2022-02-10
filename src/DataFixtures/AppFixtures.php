@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Event;
 use App\Entity\Profile;
+use App\Entity\Status;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -78,6 +79,35 @@ class AppFixtures extends Fixture
             $manager->persist($event);
         }
 
+        $status = new Status();
+        $status->setActive(true);
+        $status->setName('Backlog');
+        $status->setColor('red');
+        $manager->persist($status);
+
+        $status = new Status();
+        $status->setActive(true);
+        $status->setName('Todo');
+        $status->setColor('blue');
+        $manager->persist($status);
+
+        $status = new Status();
+        $status->setActive(true);
+        $status->setName('In Progress');
+        $status->setColor('yellow');
+        $manager->persist($status);
+
+        $status = new Status();
+        $status->setActive(true);
+        $status->setName('Waiting for Feedback');
+        $status->setColor('black');
+        $manager->persist($status);
+
+        $status = new Status();
+        $status->setActive(true);
+        $status->setName('Done');
+        $status->setColor('gray');
+        $manager->persist($status);
 
         $manager->flush();
     }

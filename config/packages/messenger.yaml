@@ -58,6 +58,14 @@ framework:
                     # e.g. 1 second delay, 2 seconds, 4 seconds
                     multiplier: 2
                     max_delay: 0
+            amqp_email_notification:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: email_notifications
+                        type: fanout
+                    queues:
+                        email_notifications: ~
 
             # Uncomment the following line to enable a transport named "amqp"
             # async: '%env(MESSENGER_TRANSPORT_DSN)%'
@@ -66,6 +74,7 @@ framework:
         routing:
             App\Message\Interfaces\MessageHighInterface: async_priority_high
             App\Message\Interfaces\MessageLowInterface: async_priority_low
+            App\Message\EmailNotification: amqp_email_notification
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

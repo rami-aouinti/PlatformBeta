@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +36,42 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function list(PaginatorInterface $paginator, Request $request, User $user)
+    {
+        $dql = $this->createQueryBuilder('u')
+            ->andWhere("u.user = :user")
+            ->setParameter("user", $user)
+            ->getQuery()
+        ;
+        return $paginator->paginate(
+            $dql, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            5 /*limit per page*/
+        );
+    }
+
+    /**
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function listAll(PaginatorInterface $paginator, Request $request)
+    {
+        $dql = $this->createQueryBuilder('u')
+            ->getQuery()
+        ;
+        return $paginator->paginate(
+            $dql, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            9 /*limit per page*/
+        );
     }
 
     // /**

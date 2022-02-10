@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Timework{% endblock %}
+
+{% block body %}
+    <h1>Create new Timework</h1>
+
+    {{ include('timework/_form.html.twig') }}
+
+    <a href="{{ path('timework_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Timework{% endblock %}
+
+{% block body %}
+    <h1>Timework</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ timework.id }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ timework.content }}</td>
+            </tr>
+            <tr>
+                <th>Start</th>
+                <td>{{ timework.start ? timework.start|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>End</th>
+                <td>{{ timework.end ? timework.end|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('timework_index') }}">back to list</a>
+
+    <a href="{{ path('timework_edit', {'id': timework.id}) }}">edit</a>
+
+    {{ include('timework/_delete_form.html.twig') }}
+{% endblock %}

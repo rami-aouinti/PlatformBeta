@@ -6,6 +6,7 @@ use App\Entity\Timework;
 use App\Form\TimeworkType;
 use App\Repository\TimeworkRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +16,23 @@ use Symfony\Component\Security\Core\Security;
 #[Route('/timework')]
 class TimeworkController extends AbstractController
 {
+    /**
+     * @var Security
+     */
+    private Security $security;
+
+    /**
+     * @param Security $security
+     */
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/', name: 'timework_index', methods: ['GET', 'POST'])]
     public function index(
         TimeworkRepository $timeworkRepository,
+        PaginatorInterface $paginator,
         Request $request,
         EntityManagerInterface $entityManager,
         Security $security
@@ -38,7 +53,7 @@ class TimeworkController extends AbstractController
         }
 
         return $this->renderForm('timework/index.html.twig', [
-            'timeworks' => $timeworkRepository->findAll(),
+            'timeworks' => $timeworkRepository->listAll($paginator, $request),
             'form' => $form,
         ]);
     }

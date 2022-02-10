@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Profile;
 use App\Entity\Status;
 use App\Entity\Task;
 use App\Entity\User;
@@ -32,6 +33,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::section('Users');
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Profiles', 'fa fa-user', Profile::class);
         yield MenuItem::linkToCrud('Tasks', 'fa fa-task', Task::class);
         yield MenuItem::linkToCrud('Status', 'fa fa-user', Status::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);

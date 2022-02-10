@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Event;
 use App\Entity\Profile;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -59,6 +60,23 @@ class AppFixtures extends Fixture
         $profile->setStart($now);
         $profile->setEnd($now);
         $manager->persist($profile);
+
+
+        for ($i = 0; $i < 10; $i++)
+        {
+            $event = new Event();
+            $event->setTitle("Event Number $i");
+            $event->setDescription("Event Description $i");
+            $event->setStart($now);
+            $event->setEnd($now);
+            $event->setActive(true);
+            $event->setAllDay(true);
+            $event->setUrl('url');
+            $event->addMember($user);
+            $event->setBackgroundColor('000000');
+            $event->setBorderColor('00000');
+            $manager->persist($event);
+        }
 
 
         $manager->flush();

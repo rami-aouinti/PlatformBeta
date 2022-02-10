@@ -18,9 +18,26 @@ class EventController extends AbstractController
     public function index(EventRepository $eventRepository): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
-        ]);
+
+        $events = $eventRepository->findAll();
+        $rdvs = [];
+
+        foreach($events as $event){
+            $rdvs[] = [
+                'id' => $event->getId(),
+                'start' => $event->getStart()->format('Y-m-d H:i:s'),
+                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
+                'title' => $event->getTitle(),
+                'description' => $event->getDescription(),
+                'backgroundColor' => $event->getBackgroundColor(),
+                'borderColor' => $event->getBorderColor(),
+                'allDay' => $event->getAllDay(),
+            ];
+        }
+
+        $data = json_encode($rdvs);
+
+        return $this->render('event/index.html.twig', compact('data'));
     }
 
     #[Route('/new', name: 'event_new', methods: ['GET', 'POST'])]

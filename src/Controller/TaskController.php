@@ -7,20 +7,39 @@ use App\Form\TaskType;
 use App\Repository\StatusRepository;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/task')]
 class TaskController extends AbstractController
 {
+    /**
+     * @var Security
+     */
+    private Security $security;
+
+    /**
+     * @param Security $security
+     */
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/', name: 'task_index', methods: ['GET'])]
-    public function index(TaskRepository $taskRepository, StatusRepository $statusRepository): Response
+    public function index(
+        TaskRepository $taskRepository,
+        StatusRepository $statusRepository,
+        PaginatorInterface $paginator,
+        Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('task/index.html.twig', [
-            'tasks' => $taskRepository->findAll(),
+            'tasks' => $taskRepository->listAll($paginator, $request),
             'status' => $statusRepository->findAll(),
         ]);
     }

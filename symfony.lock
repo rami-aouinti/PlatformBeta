@@ -161,6 +161,12 @@
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
+    "knplabs/knp-components": {
+        "version": "v3.5.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },

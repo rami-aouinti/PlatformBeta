@@ -6,10 +6,20 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Members</h1>
+            <div class="col-sm-2">
+                <div class="info-box">
+                    <div class="info-box-content">
+                        <h1> Members </h1>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
+                {{ knp_pagination_filter(users, {
+                    'u.id': 'Id',
+                }, {}, {}, 'layout/filter.html.twig') }}
+            </div>
+            <div class="col-sm-2">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
                     <li class="breadcrumb-item active">Members</li>
@@ -23,39 +33,37 @@
         <div class="row">
             {% for user in users %}
                 <!-- /.col -->
-                <div class="col-md-4">
-                    <!-- Widget: user widget style 2 -->
-                    <div class="card card-widget widget-user-2">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-warning">
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src="{{ asset('uploads/avatar/' ~ user.profile.image) }}" alt="User Avatar">
-                            </div>
-                            <!-- /.widget-user-image -->
-                            <h3 class="widget-user-username">{{ user.profile.firstname }} {{ user.profile.lastname }}</h3>
-                            <h5 class="widget-user-desc">{{ user.profile.title }}</h5>
+                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                    <div class="card d-flex flex-fill">
+                        <div class="card-header text-muted border-bottom-0">
+                            {{ user.profile.title }}
                         </div>
-                        <div class="card-footer p-0">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        Projects <span class="float-right badge bg-primary">{{ user.projects|length }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        Tasks <span class="float-right badge bg-info">{{ user.tasks|length }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        Completed Projects <span class="float-right badge bg-success">{{ user.projects|length }}</span>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="card-body pt-0">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="lead"><b>{{ user.profile.firstname }} {{ user.profile.lastname }}</b></h2>
+                                    <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: {{ user.profile.street }} {{ user.profile.homenumber }}, {{ user.profile.state }} {{ user.profile.postcode }}, {{ user.profile.country }}</li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + {{ user.profile.telefone }}</li>
+                                    </ul>
+                                </div>
+                                <div class="col-5 text-center">
+                                    <img src="{{ asset('uploads/avatar/' ~ user.profile.image) }}" alt="user-avatar" class="img-circle img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="text-right">
+                                <a href="#" class="btn btn-sm bg-teal">
+                                    <i class="fas fa-comments"></i>
+                                </a>
+                                <a href="{{ path('profile_show', {'id': user.profile.id}) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-user"></i> View Profile
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <!-- /.widget-user -->
                 </div>
 
             {% else %}
@@ -63,6 +71,9 @@
                     <td colspan="7">no records found</td>
                 </tr>
             {% endfor %}
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(users, 'layout/pagination.html.twig') }}
         </div>
     </div>
 </section>

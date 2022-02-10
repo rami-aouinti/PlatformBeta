@@ -1,0 +1,104 @@
+<nav class="main-header navbar navbar-expand-md navbar-light navbar-dark">
+    <div class="container-fluid">
+        <a href="{{ path('home') }}" class="navbar-brand">
+            <span class="brand-text font-weight-warning text-warning">Pfundskerl Intern</span>
+        </a>
+
+        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pfundskerl</a>
+                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                        <li><a href="#" class="dropdown-item">Data</a></li>
+                        <li><a href="#" class="dropdown-item">Richtlinie</a></li>
+
+                        <li class="dropdown-divider"></li>
+
+                        <!-- Level two dropdown-->
+                        <li class="dropdown-submenu dropdown-hover">
+                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Oxid Doc</a>
+                            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                <li><a href="#" class="dropdown-item">Basis</a></li>
+                                <li><a href="#" class="dropdown-item">Entwicklung</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Level two -->
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('project_index') }}" class="nav-link">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('task_index') }}" class="nav-link">Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('timework_index') }}" class="nav-link">TimeWork</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('event_index') }}" class="nav-link">Events</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('user_index') }}" class="nav-link">Members</a>
+                </li>
+            </ul>
+
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-0 ml-md-3">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right navbar links -->
+        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+            <li class="nav-item dropdown user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    {% if app.user.profile.image %}
+                        <img src="{{ asset('uploads/avatar/' ~ app.user.profile.image) }}" class="user-image img-circle elevation-2" alt="User Image">
+                    {% else %}
+                        <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
+                    {% endif %}
+                    {% if app.user.profile.firstname %}
+                        <span class="d-none d-md-inline">{{ app.user.profile.firstname }} {{ app.user.profile.lastname }}</span>
+                    {% else %}
+                        <span class="d-none d-md-inline">{{ app.user.username }}</span>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <!-- User image -->
+                    <li class="user-header bg-dark">
+                        {% if app.user.profile.image %}
+                            <img src="{{ asset('uploads/avatar/' ~ app.user.profile.image) }}" class="img-circle elevation-2" alt="User Image">
+                        {% else %}
+                        <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                        {% endif %}
+                        <p>
+                            {{ app.user.profile.title }}
+                            <small>Member since {{ app.user.profile.createdAt|date('M Y') }}</small>
+                        </p>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <a href="{{ path('profile_index') }}" class="btn btn-default btn-flat">Profile</a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-default btn-flat float-right">Sign out</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>

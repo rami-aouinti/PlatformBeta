@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Course index{% endblock %}
+
+{% block body %}
+    {% include 'layout/header.html.twig' with
+        {
+            'data': courses,
+            'page': 'Courses',
+            'path': 'home',
+            'filter': true,
+            'buttonNew': false,
+        }
+    %}
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-text-width"></i>
+                        Description Horizontal
+                    </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <dl class="row">
+                        {% for course in courses %}
+                            <dt class="col-sm-1">{{ course.title }}</dt>
+                            <dd class="col-sm-11">{{ course.content }}</dd>
+                        {% else %}
+                            no records found
+                        {% endfor %}
+                    </dl>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </section>
+{% endblock %}

@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
         $profile->setStreet('Vogelweide');
         $profile->setHomenumber('4b');
         $profile->setUser($user);
-        $profile->setImage('image.png');
+        $profile->setImage('avatar.png');
         $profile->setStart($now);
         $profile->setEnd($now);
         $manager->persist($profile);

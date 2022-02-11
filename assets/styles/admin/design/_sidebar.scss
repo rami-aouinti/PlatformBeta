@@ -1,0 +1,40 @@
+.sidebar {
+  position: fixed;
+  top: 53px;
+  width: 280px;
+  height: 100%;
+  background-color: $primary;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-transition: width 0.5s;
+  transition: width 0.5s;
+
+  .menu-list a.is-active,
+  .menu-list a.is-active:hover {
+      background-color: $menu-list-link-and-hover;
+  }
+
+  .nav-link {
+    color: $white;
+    border-radius: 4px;
+    text-align: center;
+    margin: 5px 15px;
+
+    &:hover {
+      color: $white;
+      background-color: rgba(255, 255, 255, 0.1);
+      -webkit-transition: background-color 0.3s; /* Safari */
+      transition: background-color 0.3s;
+    }
+  }
+
+  .sidebar-item-title {
+    @media screen and (max-width: 1024px){
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 1024px){
+    width: 80px;
+  }
+}

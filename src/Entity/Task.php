@@ -60,11 +60,6 @@ class Task
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="task")
-     */
-    private $comments;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="tickets")
      */
     private $project;
@@ -78,7 +73,6 @@ class Task
     {
         $this->files = new ArrayCollection();
         $this->members = new ArrayCollection();
-        $this->comments = new ArrayCollection();
         $this->timeworks = new ArrayCollection();
     }
 
@@ -184,36 +178,6 @@ class Task
     public function setStatus(?Status $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setTask($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getTask() === $this) {
-                $comment->setTask(null);
-            }
-        }
 
         return $this;
     }

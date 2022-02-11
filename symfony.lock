@@ -2,6 +2,9 @@
     "bamarni/composer-bin-plugin": {
         "version": "1.4.1"
     },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -142,6 +145,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.5.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -212,6 +218,9 @@
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "1.2.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -252,6 +261,18 @@
         },
         "files": [
             "config/packages/security_checker.yaml"
+        ]
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
     "symfony/amqp-messenger": {
@@ -597,9 +618,6 @@
     "symfony/serializer": {
         "version": "v4.4.3"
     },
-    "symfony/serializer-pack": {
-        "version": "v1.0.2"
-    },
     "symfony/service-contracts": {
         "version": "v2.0.1"
     },
@@ -682,6 +700,25 @@
             "config/packages/dev/web_profiler.yaml",
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.9",
+            "ref": "1723ab94a3ba021bcd69f6b907492668821c857f"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js",
+            "assets/styles/app.css",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
         ]
     },
     "symfony/yaml": {

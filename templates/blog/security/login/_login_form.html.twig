@@ -1,0 +1,33 @@
+{{ form_start(form, {'attr': {'id': 'login-form'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="field">
+        {{ form_label(form.username, 'login.form.username'|trans, {'label_attr': {'class': 'label has-text-left'}}) }}
+        <div class="control has-icons-left">
+            {{ form_widget(form.username, {'value': lastUserName, 'attr': {'class': 'input'}}) }}
+            <span class="icon is-small is-left">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+
+    <div class="field">
+        {{ form_label(form.password, 'login.form.password'|trans, {'label_attr': {'class': 'label has-text-left'}}) }}
+        <div class="control has-icons-left">
+            {{ form_widget(form.password, {'attr': {'class': 'input'}}) }}
+            <span class="icon is-small is-left">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+
+    {% if (error) %}
+        <div class="login-message">
+            {{ error.messageKey|trans(error.messageData, 'messages') }}
+        </div>
+    {% endif %}
+
+    <button type="submit" class="button is-primary" data-trans="{{ 'login.form.submitted'|trans }}">
+        {{ 'login.login'|trans }}
+    </button>
+{{ form_end(form) }}

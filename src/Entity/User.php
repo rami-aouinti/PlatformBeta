@@ -56,11 +56,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="author")
-     */
-    private $comments;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="members")
      */
     private $projects;
@@ -75,13 +70,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $events;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reset_password_token", type="string", unique=true, nullable=true)
+     */
+    private $resetPasswordToken;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="token_expiration_date", type="datetime", nullable=true)
+     */
+    private $tokenExpirationDate;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
-        $this->comments = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->timeworks = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -178,6 +194,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken = null): self
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getTokenExpirationDate(): ?\DateTime
+    {
+        return $this->tokenExpirationDate;
+    }
+
+    public function setTokenExpirationDate(): self
+    {
+        $date = new \DateTime();
+        $date->add(new \DateInterval('PT1H'));
+        $this->tokenExpirationDate = $date;
+
+        return $this;
+    }
+
     public function getProfile(): ?Profile
     {
         return $this->profile;
@@ -224,36 +266,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($task->getAuthor() === $this) {
                 $task->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getAuthor() === $this) {
-                $comment->setAuthor(null);
             }
         }
 
@@ -339,6 +351,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->events->removeElement($event)) {
             $event->removeMember($this);
+        }
+
+        return $this;
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
         }
 
         return $this;

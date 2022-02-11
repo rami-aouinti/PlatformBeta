@@ -2,122 +2,59 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Trait\Timestampable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=CommentRepository::class)
- *
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="comment")
+ * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
-    /*
-     * Timestampable trait
-     */
-    use Timestampable;
-
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private ?int $id;
+    private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="comments")
-     */
-    private $parent_comment;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="parent_comment")
-     */
-    private $comments;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createAt", type="datetime")
      */
-    private $author;
+    private $createAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Task::class, inversedBy="comments")
+     * @var Article
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Article", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $task;
+    private $article;
 
     /**
-     * Constructor
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
+    private $user;
 
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->content;
-    }
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getParentComment(): ?self
-    {
-        return $this->parent_comment;
-    }
-
-    public function setParentComment(?self $parent_comment): self
-    {
-        $this->parent_comment = $parent_comment;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(self $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setParentComment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(self $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getParentComment() === $this) {
-                $comment->setParentComment(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
     }
 
     public function setContent(string $content): self
@@ -127,27 +64,43 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getContent(): ?string
     {
-        return $this->author;
+        return $this->content;
     }
 
-    public function setAuthor(?User $author): self
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setCreateAt()
     {
-        $this->author = $author;
+        $this->createAt = new \DateTime();
+    }
+
+    public function getCreateAt(): \DateTime
+    {
+        return $this->createAt;
+    }
+
+    public function setArticle(Article $article): self
+    {
+        $this->article = $article;
 
         return $this;
     }
 
-    public function getTask(): ?Task
+    public function getArticle(): Article
     {
-        return $this->task;
+        return $this->article;
     }
 
-    public function setTask(?Task $task): self
+    public function getUser(): ?User
     {
-        $this->task = $task;
+        return $this->user;
+    }
 
-        return $this;
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 }

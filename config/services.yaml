@@ -6,12 +6,28 @@
 parameters:
     locale: 'en'
     avatar_directory: '%kernel.project_dir%/public/uploads/avatar'
+    image_articles_coverages_directory: '%kernel.project_dir%/public/uploads/articles/coverages/'
+    image_articles_coverages_display: '/uploads/articles/coverages/'
+    itemperpage: 5
+    supportedLocales:
+        - en
+        - fr
+    env(MERCURE_PUBLISH_URL): ''
+    env(MERCURE_JWT_SECRET): ''
+    mercure_secret_key: symfonyBlogJwtToken
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $userActionLogger: '@monolog.logger.user_action'
+            $itemPerPage: '%itemperpage%'
+            $targetDir: '%image_articles_coverages_directory%'
+            $supportedLocales: '%supportedLocales%'
+            $locale: '%locale%'
+
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -32,6 +48,22 @@ services:
 
     App\Service\Interfaces\MessageServiceInterface:
         class: App\Service\MessageService
+
+    App\EventSubscriber\UserActionSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    App\EventSubscriber\PasswordTokenReset:
+        tags:
+            - { name: kernel.event_listener, event: token.reseted, method: resetToken }
+
+    App\Services\Faker\Provider\EncodePasswordProvider:
+        tags:
+            - { name: nelmio_alice.faker.provider }
+
+    App\Services\MercureCookieGenerator:
+        arguments:
+            - '%mercure_secret_key%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block wrapper %}
+    {{ parent() }}
+    <div class="flex-1 section">
+        <div class="container">
+            {% block flashmessage %}
+                {% include 'flashMessage/flashMessage.html.twig' %}
+            {% endblock %}
+
+            {% block body %}{% endblock %}
+
+            {% block security %}{% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+        <footer class="footer">
+            <div class="container">
+                <div class="content has-text-centered">
+                    <p>
+                        My Symfony blog training to be strong ! Find me on
+                        <a href="https://github.com/pifaace">Github</a>
+                    </p>
+                    <p>
+                        <a class="dark-grey-color" href="https://github.com/pifaace/symfony-blog">
+                            <i class="fa fa-github fa-4x" aria-hidden="true"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
+
+{% endblock %}

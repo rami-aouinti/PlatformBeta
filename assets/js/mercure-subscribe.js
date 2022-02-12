@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 const url = new URL('http://localhost:3000/hub')
-url.searchParams.append('topic', 'http://symfony-blog.fr/new/article')
+url.searchParams.append('topic', 'http://localhost/new/article')
 
 const eventSource = new EventSource(url, {withCredentials: true})
 

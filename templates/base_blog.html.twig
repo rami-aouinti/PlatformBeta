@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Symfony-blog{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+        {% endblock %}
+    </head>
+    <body class="bg-grey is-flex flex-co min-h-screen">
+    {% block wrapper %}
+        {% include 'navbar/navbar.html.twig' %}
+        {% include 'notification-translations/message.html.twig' %}
+    {% endblock %}
+    </body>
+    {% block javascripts %}
+        {% if is_granted('ROLE_USER') %}
+        <script src="{{ asset('build/js/mercure-subscribe.js') }}"></script>
+        {% endif %}
+        <script src="{{ asset('build/js/app.js') }}"></script>
+    {% endblock %}
+</html>

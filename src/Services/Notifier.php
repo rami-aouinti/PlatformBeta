@@ -84,9 +84,9 @@ class Notifier
         $this->userNotificationRepository->flush();
 
         $update = new Update(
-            'http://symfony-blog.fr/new/article',
+            'http://localhost/new/article',
             $jsonContent,
-            ['http://symfony-blog.fr/group/users']
+            ['http://localhost/group/users']
         );
 
         $publisher($update);

@@ -717,12 +717,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9116da79b31af52c77c526addf34d7a2ff0b55dd"
+                "reference": "a74c203357d9b250a4019bc18e9a23a050e16bef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9116da79b31af52c77c526addf34d7a2ff0b55dd",
-                "reference": "9116da79b31af52c77c526addf34d7a2ff0b55dd",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a74c203357d9b250a4019bc18e9a23a050e16bef",
+                "reference": "a74c203357d9b250a4019bc18e9a23a050e16bef",
                 "shasum": ""
             },
             "conflict": {
@@ -962,7 +962,7 @@
                 "propel/propel": ">=2-alpha.1,<=2-alpha.7",
                 "propel/propel1": ">=1,<=1.7.1",
                 "pterodactyl/panel": "<1.7",
-                "ptrofimov/beanstalk_console": "<1.7.12",
+                "ptrofimov/beanstalk_console": "<1.7.14",
                 "pusher/pusher-php-server": "<2.2.1",
                 "pwweb/laravel-core": "<=0.3.6-beta",
                 "rainlab/debugbar-plugin": "<3.1",
@@ -1160,7 +1160,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-10T23:14:40+00:00"
+            "time": "2022-02-11T21:12:37+00:00"
         },
         {
             "name": "symfony/console",

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage", methods={"GET"})
+     * @Route("/blog", name="homepage", methods={"GET"})
      * @Cache(smaxage="5")
      */
     public function index(Paginator $paginator, ArticleRepository $articleRepository): Response

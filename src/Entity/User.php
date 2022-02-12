@@ -9,10 +9,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Trait\Timestampable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- *
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="signin.unique_email"
+ * )
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="signin.unique_username"
+ * )
  * @ORM\HasLifecycleCallbacks
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -28,6 +37,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      */
     private ?int $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=25, unique=true)
+     *
+     * @Assert\NotBlank(
+     *     message="signin.required_username"
+     * )
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="signin.min_char_username"
+     * )
+     * @Assert\Regex(
+     *     pattern="/^[\pL\pM\pN_-]+$/u",
+     *     match=true,
+     *     message="signin.wrong_char_username"
+     * )
+     */
+    private $username;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="provider_id", type="integer", nullable=true)
+     */
+    private $providerId;
+
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(
+     *     message="signin.required_password"
+     * )
+     * @Assert\Length(
+     *     min=6,
+     *     max=4096,
+     *     minMessage="signin.min_char_password"
+     * )
+     */
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -110,6 +160,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -132,12 +192,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
+    public function getPlainPassword(): ?string
     {
-        return (string) $this->email;
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     /**
@@ -146,8 +210,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
+        if (empty($rols)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
@@ -157,6 +223,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+
+    public function serialize(): ?string
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+        ]);
+    }
+
+    public function unserialize($serialized): void
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password) = unserialize($serialized);
     }
 
     /**
@@ -172,6 +256,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getProviderId(): ?int
+    {
+        return $this->providerId;
+    }
+
+    public function setProviderId(int $providerId): void
+    {
+        $this->providerId = $providerId;
     }
 
     /**

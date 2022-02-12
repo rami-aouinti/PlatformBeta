@@ -46,8 +46,16 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
     App\Service\Interfaces\MessageServiceInterface:
         class: App\Service\MessageService
+
+    App\Security\LoginGithubAuthenticator:
+        arguments: [ "@eight_points_guzzle.client.github_oauth" ]
 
     App\EventSubscriber\UserActionSubscriber:
         tags:

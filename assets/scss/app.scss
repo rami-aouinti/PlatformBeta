@@ -8,7 +8,10 @@
 @import "~bulma/bulma";
 
 // Import Font-awesome
-@import "~font-awesome-sass";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
 
 @import "base";
 @import "spacing";

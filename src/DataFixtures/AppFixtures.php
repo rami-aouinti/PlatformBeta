@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Article;
 use App\Entity\Event;
+use App\Entity\Image;
 use App\Entity\Profile;
 use App\Entity\Status;
 use App\Entity\User;
@@ -40,6 +42,7 @@ class AppFixtures extends Fixture
         $user = new User();
         $user->setEmail("rami.aouinti@gmail.com");
         $user->setPassword($this->userPasswordEncoder->encodePassword($user, "19891989aA"));
+        $user->setUsername('Rami');
         $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
 
@@ -108,6 +111,18 @@ class AppFixtures extends Fixture
         $status->setName('Done');
         $status->setColor('gray');
         $manager->persist($status);
+
+        $image = new Image();
+        $image->setAlt('avatar');
+        $manager->persist($image);
+
+            $article = new Article();
+            $article->setTitle("Test Article");
+            $article->setContent("Test Content");
+            $article->setAuthor($user);
+            $article->setImage($image);
+            $manager->persist($article);
+
 
         $manager->flush();
     }

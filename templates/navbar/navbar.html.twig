@@ -1,0 +1,62 @@
+<nav class="navbar {{ (app.request.requestUri matches '/admin/' ? 'is-fixed-top' : '') }}"
+     role="navigation" aria-label="main navigation">
+    <div class="container">
+
+        <div class="navbar-brand">
+            <a href="{{ path('home') }}" class="navbar-item">Training Symfony-blog</a>
+
+            <div class="button navbar-burger burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="navbar-menu">
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="navbar-start">
+                    <a href="{{ path('admin-dashboard') }}" class="navbar-item">
+                        {{ 'navbar.dashboard'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+            <div class="navbar-end">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                    {% include 'navbar/bell-notification.html.twig' %}
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            {{ app.user.username }}
+                        </a>
+                        <div class="navbar-dropdown is-right">
+                            <a class="navbar-item" href="{{ path('user_profile') }}">
+                                {{ 'navbar.profile'|trans }}
+                            </a>
+                            <a class="navbar-item" href="#">
+                                {{ 'navbar.logout'|trans }}
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('login') }}" class="navbar-item navbar-action bold">
+                        {{ 'navbar.login'|trans }}
+                    </a>
+                    <p class="navbar-item navbar-action">{{ 'generic.or'|trans }}</p>
+                    <a href="{{ path('registration') }}" class="navbar-item navbar-action bold">
+                        {{ 'navbar.signin'|trans }}
+                    </a>
+                {% endif %}
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">{{ app.request.locale|upper }}</a>
+
+                    <div class="navbar-dropdown">
+                        <a href="{{ path('switch_locale', {'locale': 'fr'}) }}" class="navbar-item">FR</a>
+                        <a href="{{ path('switch_locale', {'locale': 'en'}) }}" class="navbar-item">EN</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

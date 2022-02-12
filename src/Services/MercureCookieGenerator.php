@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Key;
 
 class MercureCookieGenerator
 {
@@ -12,7 +14,7 @@ class MercureCookieGenerator
     /**
      * @var string
      */
-    private $secret;
+    private string $secret;
 
     public function __construct(string $secret)
     {
@@ -21,10 +23,13 @@ class MercureCookieGenerator
 
     public function generate(): string
     {
-        $token = (new Builder())
-            ->set('mercure', ['subscribe' => ['http://symfony-blog.fr/group/users']])
-            ->sign(new Sha256(), $this->secret)
-            ->getToken();
+        $key = Key\InMemory::plainText($this->secret);
+        $configuration = Configuration::forSymmetricSigner(new Sha256(), $key);
+
+        $token = $configuration->builder()
+            ->withClaim('mercure', ['subscribe' => ["http://localhost/group/users"]]) // can also be a URI template, or *
+            ->getToken($configuration->signer(), $configuration->signingKey())
+            ->toString();
 
         return sprintf('%s=%s; path=hub/; httponly;', self::MERCURE_AUTHORIZATION_HEADER, $token);
     }

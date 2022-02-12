@@ -34,6 +34,11 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("admin/article/new", name="article_new", methods={"GET", "POST"})
+     * @param Request $request
+     * @param FlashMessage $flashMessage
+     * @param Notifier $notifier
+     * @param Publisher $publisher
+     * @return Response
      */
     public function new(Request $request, FlashMessage $flashMessage, Notifier $notifier, Publisher $publisher): Response
     {

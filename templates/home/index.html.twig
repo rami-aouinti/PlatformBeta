@@ -3,18 +3,203 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-2">
+                    <h1></h1>
+                </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <button type="button" class="btn btn-block btn-outline-warning btn-lg" data-toggle="modal" data-target="#modal-form-post">
+                            Add Post
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-form-post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content bg-dark">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">New Post</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <form id="myFormPost">
+                                        <div class="modal-body">
+                                            <div class="input-group input-group-outline mb-4">
+                                                <input name="title" type="text" class="form-control" placeholder="Titel">
+                                            </div>
+                                            <div class="input-group input-group-outline mb-4">
+                                                <textarea name="content" type="text" class="form-control" placeholder="Description"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="custom-file">
+                                                    <input name="exampleInputFile" type="file" class="custom-file-input" id="exampleInputFile">
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button onclick="addNewPost();" type="button" class="btn bg-gradient-primary">Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ path('home') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Blog</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div id="post"></div>
+                    {% if articles is not empty %}
+                    {% for article in articles %}
+                        <div class="card">
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <div class="post">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
+                                        <span class="username">
+                          <a href="#">{{ article.author.profile.firstname }} {{ article.author.profile.lastname }}</a>
+                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                        </span>
+                                        <span class="description">Shared publicly - 7:30 PM today</span>
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <p>
+                                        {{ article.content }}
+                                    </p>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                                    <p>
+                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                                        <span class="float-right">
+                          <a href="#" class="link-black text-sm">
+                            <i class="far fa-comments mr-1"></i> Comments ({{ article.comments|length }})
+                          </a>
+                        </span>
+                                    </p>
+                                    {% for comment in article.comments|sort|reverse %}
+                                        <div class="row">
+                                            <div class="col-md-1">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+                                            </div>
+                                            <div class="col-md-11">
+                                                <div class="user-block">
+                                                    <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
+                                                    <span class="username">
+                                            <p>{{ comment.content }}</p>
+                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                        </span>
+                                                    <span class="description">Shared publicly - 7:30 PM today</span>
+                                                </div>
+                                                <!-- /.user-block -->
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                                </div>
+                            </div>
+                        </div>
+                    <!-- /.post -->
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                  <center>{% include 'paginator/paginator.html.twig' %}</center>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+
+        function addNewPost() {
+            let url = `/new/post`
+            let donnees = {
+                "title": document.getElementById("myFormPost").elements["title"].value,
+                "content": document.getElementById("myFormPost").elements["content"].value,
+                "image": document.getElementById("exampleInputFile").value
+            }
+            let xhr = new XMLHttpRequest
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = xhr.responseText;
+                    var data = JSON.parse(response);
+                    var post = data['data'];
+                    console.log(post.user);
+                    $( "#post" )
+                        .append( '<div class="card card-frame"><div class="card-header d-flex">' +
+                            '<p class="font-weight-normal my-auto">'  + '</p>' +
+                            '<i class="material-icons position-relative ms-auto text-lg me-1 my-auto">date</i>' +
+                            '<p class="text-sm my-auto"> Now</p></div>' +
+                            '<div class="card-body">' +
+                            '<h5>' + post.title + '</h5><p>' + post.content+ '</p></div>' +
+                            '<div class="card-footer">' +
+                            '<form>' +
+                            '<div class="input-group input-group-outline mb-4">' +
+                            '<label class="form-label">Comment</label>' +
+                            '<input type="text" class="form-control">' +
+                            '</div></form></div></div><br>' );
+                }
+                else {
+                    successSwal('Not Saved Bro')
+                }
+            };
+            xhr.open("POST", url)
+            xhr.send(JSON.stringify(donnees))
+            $('#modal-form-post').modal('toggle');
+        }
+        function editPost() {
+            var id = document.getElementById("myFormTaskEdit").elements["id"].value;
+            let url = `/task/${id}/edit/task`
+            let donnees = {
+                "description": document.getElementById("myFormTaskEdit").elements["description"].value,
+                "startDate": document.getElementById("myFormTaskEdit").elements["startDate"].value,
+                "endDate": document.getElementById("myFormTaskEdit").elements["endDate"].value,
+                "ticket": document.getElementById("myFormTaskEdit").elements["ticket"].value
+            }
+            let xhr = new XMLHttpRequest
+            xhr.onload = function(data) {
+                if (xhr.status === 200) {
+                    successSwal('Saved Bro')
+                }
+                else {
+                    successSwal('Not Saved Bro')
+                }
+            };
+            xhr.open("PUT", url)
+            xhr.send(JSON.stringify(donnees))
+            $('#modal-form-task-edit').modal('toggle');
+        }
+    </script>
 {% endblock %}

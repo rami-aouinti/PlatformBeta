@@ -22,7 +22,7 @@ class Article
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
@@ -32,62 +32,62 @@ class Article
      *     message="backoffice.article.title_required"
      * )
      */
-    private $title;
+    public ?string $title = Null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", unique=true)
      */
-    private $slug;
+    public ?string $slug = Null;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_at", type="datetime", nullable=false)
      */
-    private $createAt;
+    public ?\DateTime $createAt = Null;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="content", type="text")
      * @Assert\NotBlank(
      *     message="backoffice.article.content_required"
      * )
      */
-    private $content;
+    public ?string $content = Null;
 
     /**
-     * @var User
+     * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false, name="user_id")
      */
-    private $author;
+    public ?User $author = Null;
 
     /**
      * @var array
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", cascade={"persist", "remove"})
      */
-    private $comments;
+    public $comments;
 
     /**
-     * @var Image
+     * @var Image|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      * @Assert\Valid
      */
-    private $image;
+    public ?Image $image = Null;
 
     /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      */
-    private $tags;
+    public $tags;
 
     public function __construct()
     {

@@ -14,8 +14,27 @@
         <link rel="stylesheet" href="{{ asset('adminlte/plugins/fullcalendar/main.css') }}">
         <!-- flag-icon-css -->
         <link rel="stylesheet" href="{{ asset('adminlte/plugins/flag-icon-css/css/flag-icon.min.css') }}">
-
+        <style>
+            #footer {
+                position: fixed;
+                padding: 10px 10px 0px 10px;
+                bottom: 0;
+                width: 100%;
+                /* Height of the footer*/
+                height: 40px;
+            }
+            .color-palette {
+                height: 35px;
+                line-height: 35px;
+                text-align: right;
+                padding-right: .75rem;
+            }
+            .color-palette-set {
+                margin-bottom: 15px;
+            }
+        </style>
         {% block stylesheets %}
+
         {% endblock %}
 
     </head>

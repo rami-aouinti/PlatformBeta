@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /*
-     * Timestampable trait
+     * Trait
      */
     use Timestampable;
 
@@ -135,19 +135,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $tokenExpirationDate;
 
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
-    private $comments;
+    private $messages;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=GroupConversation::class, inversedBy="users", cascade={"persist"})
+     */
+    private $conversations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GroupConversation::class, mappedBy="admin", cascade={"persist"})
+     */
+    private $adminGroupConversations;
 
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
-        $this->projects = new ArrayCollection();
-        $this->timeworks = new ArrayCollection();
-        $this->events = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->tasks                    = new ArrayCollection();
+        $this->projects                 = new ArrayCollection();
+        $this->timeworks                = new ArrayCollection();
+        $this->events                   = new ArrayCollection();
+        $this->comments                 = new ArrayCollection();
+        $this->messages                 = new ArrayCollection();
+        $this->conversations            = new ArrayCollection();
+        $this->adminGroupConversations  = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -472,6 +483,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GroupConversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(GroupConversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(GroupConversation $conversation): self
+    {
+        $this->conversations->removeElement($conversation);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GroupConversation[]
+     */
+    public function getAdminGroupConversations(): Collection
+    {
+        return $this->adminGroupConversations;
+    }
+
+    public function addGroupConversation(GroupConversation $groupConversation): self
+    {
+        if (!$this->adminGroupConversations->contains($groupConversation)) {
+            $this->adminGroupConversations[] = $groupConversation;
+            $groupConversation->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupConversation(GroupConversation $groupConversation): self
+    {
+        if ($this->adminGroupConversations->removeElement($groupConversation)) {
+            // set the owning side to null (unless already changed)
+            if ($groupConversation->getAdmin() === $this) {
+                $groupConversation->setAdmin(null);
             }
         }
 

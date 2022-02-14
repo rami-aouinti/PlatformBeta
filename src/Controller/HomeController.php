@@ -6,8 +6,10 @@ use App\Entity\Image;
 use App\Form\ArticleType;
 use App\Services\Article\Manager\ArticleManager;
 use App\Services\FlashMessage;
+use App\Services\Notifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Message\EmailNotification;
 use App\Entity\Article;
@@ -74,9 +76,22 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/switch-locale/{locale}", name="switch_locale", methods={"GET"})
+     */
+    public function switchLocale(Request $request, string $locale)
+    {
+        if ($locale === 'en') {
+            $request->getSession()->set('locale', 'us');
+        } else {
+            $request->getSession()->set('locale', $locale);
+        }
+        return $this->redirectToRoute('home');
+    }
+
+    /**
      * @Route("/new/post", name="api_post_new_post", methods={"POST"})
      */
-    public function newPost(Request $request, FlashMessage $flashMessage): JsonResponse
+    public function newPost(Request $request, FlashMessage $flashMessage, Notifier $notifier, PublisherInterface $publisher): JsonResponse
     {
         // On récupère les données
         $data = json_decode($request->getContent());
@@ -93,6 +108,7 @@ class HomeController extends AbstractController
             //$image->setFile($data->image);
             //$post->setImage($image);
             $this->articleManager->create($post);
+            $notifier->articleCreated($post, $publisher);
             $flashMessage->createMessage(
                 $request,
                 FlashMessage::INFO_MESSAGE,

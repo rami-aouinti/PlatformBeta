@@ -1,0 +1,20 @@
+<!-- Language Dropdown Menu -->
+<li class="nav-item dropdown">
+    <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="flag-icon flag-icon-{{ app.request.locale }}"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right p-0">
+        <a href="{{ path('switch_locale', {'locale': 'us'}) }}" class="dropdown-item">
+            <i class="flag-icon flag-icon-us mr-2"></i> English
+        </a>
+        <a href="{{ path('switch_locale', {'locale': 'de'}) }}" class="dropdown-item">
+            <i class="flag-icon flag-icon-de mr-2"></i> German
+        </a>
+        <a href="{{ path('switch_locale', {'locale': 'fr'}) }}" class="dropdown-item">
+            <i class="flag-icon flag-icon-fr mr-2"></i> French
+        </a>
+        <a href="{{ path('switch_locale', {'locale': 'es'}) }}" class="dropdown-item">
+            <i class="flag-icon flag-icon-es mr-2"></i> Spanish
+        </a>
+    </div>
+</li>

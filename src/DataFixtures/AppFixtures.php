@@ -7,6 +7,7 @@ namespace App\DataFixtures;
 use App\Entity\Article;
 use App\Entity\Event;
 use App\Entity\Image;
+use App\Entity\NotificationType;
 use App\Entity\Profile;
 use App\Entity\Status;
 use App\Entity\User;
@@ -32,6 +33,9 @@ class AppFixtures extends Fixture
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
@@ -64,6 +68,34 @@ class AppFixtures extends Fixture
         $profile->setStart($now);
         $profile->setEnd($now);
         $manager->persist($profile);
+
+        for ($i = 0; $i < 20; $i++) {
+            $user = new User();
+            $user->setPassword($this->userPasswordEncoder->encodePassword($user, "19891989aA"));
+            $user->setUsername('Florian' . $i);
+            $user->setEmail('test' . random_int(0,1000).'@test1.fr');
+            $user->setRoles(['ROLE_USER']);
+            $manager->persist($user);
+
+            $profile = new Profile();
+            $profile->setFirstname('Florian' . random_int(0,1000));
+            $profile->setLastname('Aouinti');
+            $profile->setEmail('test' . random_int(0,1000).'@test1.fr');
+            $profile->setActive(true);
+            $profile->setBirthday($now);
+            $profile->setCountry('Germany');
+            $profile->setNationality('Tunesisch');
+            $profile->setState('Müncchen');
+            $profile->setTelefone('017635587613');
+            $profile->setPostcode(85375);
+            $profile->setStreet('Vogelweide');
+            $profile->setHomenumber('4b');
+            $profile->setUser($user);
+            $profile->setImage('avatar.png');
+            $profile->setStart($now);
+            $profile->setEnd($now);
+            $manager->persist($profile);
+        }
 
 
         for ($i = 0; $i < 10; $i++)
@@ -116,13 +148,16 @@ class AppFixtures extends Fixture
         $image->setAlt('avatar');
         $manager->persist($image);
 
-            $article = new Article();
-            $article->setTitle("Test Article");
-            $article->setContent("Test Content");
-            $article->setAuthor($user);
-            $article->setImage($image);
-            $manager->persist($article);
+        $article = new Article();
+        $article->setTitle("Test Article");
+        $article->setContent("Test Content");
+        $article->setAuthor($user);
+        $article->setImage($image);
+        $manager->persist($article);
 
+      $notificationType = new NotificationType();
+      $notificationType->setName('article_created');
+      $manager->persist($notificationType);
 
         $manager->flush();
     }

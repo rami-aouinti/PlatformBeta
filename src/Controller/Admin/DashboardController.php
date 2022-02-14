@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Course;
+use App\Entity\NotificationType;
 use App\Entity\Profile;
 use App\Entity\Regel;
 use App\Entity\Status;
@@ -40,6 +41,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Course', 'fa fa-task', Course::class);
         yield MenuItem::linkToCrud('Tasks', 'fa fa-task', Task::class);
         yield MenuItem::linkToCrud('Status', 'fa fa-user', Status::class);
+        yield MenuItem::linkToCrud('Notification Type', 'fa fa-user', NotificationType::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linkToLogout('Logout', 'fa fa-sign-out');
     }

@@ -10,6 +10,9 @@ parameters:
     image_articles_coverages_display: '/uploads/articles/coverages/'
     itemperpage: 5
     supportedLocales:
+        - de
+        - es
+        - us
         - en
         - fr
     env(MERCURE_PUBLISH_URL): ''
@@ -72,6 +75,15 @@ services:
     App\Services\MercureCookieGenerator:
         arguments:
             - '%mercure_secret_key%'
+
+    App\Service\JWTprovider:
+        arguments:
+            - '%mercure_secret_key%'
+            - '@security.token_storage'
+    App\Service\CookieGenerator:
+        arguments:
+            $secret: '%mercure_secret_key%'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -9,7 +9,7 @@ use App\Repository\UserNotificationRepository;
 use App\Repository\UserRepository;
 use App\Services\Notification\Factory\NotificationFactory;
 use App\Services\UserNotification\Factory\UserNotificationFactory;
-use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -67,12 +67,12 @@ class Notifier
     /**
      * When an article is created, the app will notify all users that are connected.
      */
-    public function articleCreated(Article $article, Publisher $publisher)
+    public function articleCreated(Article $article, PublisherInterface $publisher)
     {
         $notification = $this->notificationFactory->create($article, NotificationType::ARTICLE_CREATED);
         $this->notificationRepository->save($notification);
 
-        $jsonContent = $this->serializer->serialize($notification, 'json');
+        $jsonContent = $this->serializer->serialize($notification, 'json', ['groups' => ['normal']]);
 
         $users = $this->userRepository->findAll();
 
@@ -85,8 +85,7 @@ class Notifier
 
         $update = new Update(
             'http://localhost/new/article',
-            $jsonContent,
-            ['http://localhost/group/users']
+            $jsonContent
         );
 
         $publisher($update);

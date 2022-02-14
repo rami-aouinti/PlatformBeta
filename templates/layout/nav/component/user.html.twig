@@ -1,0 +1,33 @@
+<li class="nav-item dropdown user-menu">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+        {% if app.user.profile.image %}
+            <img src="{{ asset('uploads/avatar/' ~ app.user.profile.image) }}" class="user-image img-circle elevation-2" alt="User Image">
+        {% else %}
+            <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
+        {% endif %}
+        {% if app.user.profile.firstname %}
+            <span class="d-none d-md-inline">{{ app.user.profile.firstname }} {{ app.user.profile.lastname }}</span>
+        {% else %}
+            <span class="d-none d-md-inline">{{ app.user.username }}</span>
+        {% endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <!-- User image -->
+        <li class="user-header bg-dark">
+            {% if app.user.profile.image %}
+                <img src="{{ asset('uploads/avatar/' ~ app.user.profile.image) }}" class="img-circle elevation-2" alt="User Image">
+            {% else %}
+                <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            {% endif %}
+            <p>
+                {{ app.user.profile.title }}
+                <small>Member since {{ app.user.profile.createdAt|date('M Y') }}</small>
+            </p>
+        </li>
+        <!-- Menu Footer-->
+        <li class="user-footer">
+            <a href="{{ path('profile_index') }}" class="btn btn-default btn-flat">Profile</a>
+            <a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+        </li>
+    </ul>
+</li>

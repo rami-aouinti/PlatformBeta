@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Notification
 {
     /**
+     * @Groups("normal")
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,17 +23,20 @@ class Notification
     private $id;
 
     /**
+     * @Groups("normal")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
+     * @Groups("normal")
      * @ORM\ManyToOne(targetEntity="App\Entity\NotificationType")
      * @ORM\JoinColumn(nullable=false)
      */
     private $notificationType;
 
     /**
+     * @Groups("normal")
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -45,6 +50,7 @@ class Notification
     private $userNotifications;
 
     /**
+     * @Groups("normal")
      * @ORM\Column(name="target_link", type="string")
      * @ORM\JoinColumn(nullable=false)
      */

@@ -13,6 +13,7 @@ import $ from 'jquery';
 
 import './js/delete-notification'
 import './js/button-click-back'
+import './controllers/modules/articles/add'
 import BellNotification from './js/class/BellNotification'
 
 new BellNotification($('#bell'))

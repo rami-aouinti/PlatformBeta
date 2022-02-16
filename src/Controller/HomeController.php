@@ -7,6 +7,7 @@ use App\Form\ArticleType;
 use App\Services\Article\Manager\ArticleManager;
 use App\Services\FlashMessage;
 use App\Services\Notifier;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\PublisherInterface;
@@ -57,20 +58,16 @@ class HomeController extends AbstractController
      * @Route("/home", name="home", methods={"GET"})
      * @Cache(smaxage="5")
      */
-    public function index(Paginator $paginator, ArticleRepository $articleRepository, Request $request): Response
+    public function index(ArticleRepository $articleRepository,PaginatorInterface $paginator, Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
-        $page = $paginator->getPage();
-        $articles = $paginator->getItemList($articleRepository, $page);
-        $nbPages = $paginator->countPage($articles);
+        $articles = $articleRepository->listAll($paginator, $request);
         return $this->render('home/index.html.twig', [
             'articles' => $articles,
-            'nbPages' => $nbPages,
-            'page' => $page,
             'form' => $form->createView()
         ]);
     }
@@ -103,10 +100,7 @@ class HomeController extends AbstractController
             // On hydrate l'objet avec les données
             $post->setTitle($data->title);
             $post->setContent($data->content);
-            //$image = new Image();
-            //$image->setAlt($data->image);
-            //$image->setFile($data->image);
-            //$post->setImage($image);
+            // Save Image
             $this->articleManager->create($post);
             $notifier->articleCreated($post, $publisher);
             $flashMessage->createMessage(

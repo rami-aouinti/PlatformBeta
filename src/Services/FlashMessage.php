@@ -10,7 +10,7 @@ class FlashMessage
     public const ERROR_MESSAGE = 'error';
 
     /**
-     * Service to generate a flashmessage depends on type.
+     * Service to generate a flash message depends on type.
      */
     public function createMessage(Request $request, string $type, string $message)
     {

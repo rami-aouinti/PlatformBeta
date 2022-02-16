@@ -12,7 +12,7 @@
 {% if pageCount > 1 %}
     <nav aria-label="Page navigation example"
     {% set classAlign = (align is not defined) ? '' : align=='center' ? ' justify-content-center' : (align=='right' ? ' justify-content-end' : '') %}
-    {% set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') %}
+    {% set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') %}>
     <ul class="pagination{{ classAlign }}{{ classSize }} justify-content-center">
 
         {% if previous is defined %}

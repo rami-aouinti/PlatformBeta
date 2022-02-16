@@ -6,48 +6,17 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
+            <div class="row">
                 <div class="col-sm-2">
-                    <h1></h1>
+                    <div class="info-box bg-gray">
+                        <div class="info-box-content">
+                            <h1> Blog </h1>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
                 </div>
                 <div class="col-sm-8">
-                    <div class="row">
-                        <button type="button" class="btn btn-block btn-outline-warning btn-lg" data-toggle="modal" data-target="#modal-form-post">
-                            Add Post
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="modal-form-post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content bg-dark">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">New Post</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                        </button>
-                                    </div>
-                                    <form id="myFormPost">
-                                        <div class="modal-body">
-                                            <div class="input-group input-group-outline mb-4">
-                                                <input name="title" type="text" class="form-control" placeholder="Titel">
-                                            </div>
-                                            <div class="input-group input-group-outline mb-4">
-                                                <textarea name="content" type="text" class="form-control" placeholder="Description"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="custom-file">
-                                                    <input name="exampleInputFile" type="file" class="custom-file-input" id="exampleInputFile">
-                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button onclick="addNewPost();" type="button" class="btn bg-gradient-primary">Add</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="col-sm-2">
                     <ol class="breadcrumb float-sm-right">
@@ -60,64 +29,114 @@
     </section>
     <section class="content">
         <div class="container-fluid">
-            <div id="post"></div>
-                    {% if articles is not empty %}
-                    {% for article in articles %}
-                        <div class="card">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <div class="post">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
-                                        <span class="username">
-                          <a href="#">{{ article.author.profile.firstname }} {{ article.author.profile.lastname }}</a>
-                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                        </span>
-                                        <span class="description">Shared publicly - 7:30 PM today</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <p>
-                                        {{ article.content }}
-                                    </p>
-
-                                    <p>
-                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                                        <span class="float-right">
-                          <a href="#" class="link-black text-sm">
-                            <i class="far fa-comments mr-1"></i> Comments ({{ article.comments|length }})
-                          </a>
-                        </span>
-                                    </p>
-                                    {% for comment in article.comments|sort|reverse %}
-                                        <div class="row">
-                                            <div class="col-md-1">
-
-                                            </div>
-                                            <div class="col-md-11">
-                                                <div class="user-block">
-                                                    <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
-                                                    <span class="username">
-                                            <p>{{ comment.content }}</p>
-                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                        </span>
-                                                    <span class="description">Shared publicly - 7:30 PM today</span>
-                                                </div>
-                                                <!-- /.user-block -->
-
-                                            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-block btn-outline-warning btn-lg" data-toggle="modal" data-target="#modal-form-post">
+                                Add Post
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="modal-form-post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content bg-dark">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title font-weight-normal" id="exampleModalLabel">New Post</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            </button>
                                         </div>
-                                    {% endfor %}
-
-                                    <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                                        <form id="myFormPost">
+                                            <div class="modal-body">
+                                                <div class="input-group input-group-outline mb-4">
+                                                    <input name="title" type="text" class="form-control" placeholder="Titel">
+                                                </div>
+                                                <div class="input-group input-group-outline mb-4">
+                                                    <textarea name="content" type="text" class="form-control" placeholder="Description"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-file">
+                                                        <input name="exampleInputFile" type="file" class="custom-file-input" id="exampleInputFile">
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button onclick="addNewPost();" type="button" class="btn bg-gradient-primary">Add</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    <!-- /.post -->
-                    {% endfor %}
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div id="post"></div>
+                    {% if articles is not empty %}
+                        {% for article in articles %}
+                            <div class="card">
+                                <div class="card-header"></div>
+                                <div class="card-body">
+                                    <div class="post">
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
+                                            <span class="username">
+                                        <a href="#">{{ article.author.profile.firstname }} {{ article.author.profile.lastname }}</a>
+                                        <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                    </span>
+                                            <span class="description">Shared publicly - 7:30 PM today</span>
+                                        </div>
+                                        <!-- /.user-block -->
+                                        <p>{{ article.content }}</p>
+                                        <p><a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                                            <span class="float-right">
+                                        <a href="#" class="link-black text-sm"><i class="far fa-comments mr-1"></i> Comments ({{ article.comments|length }})
+                                        </a>
+                                    </span>
+                                        </p>
+                                        {% for comment in article.comments|sort|reverse %}
+                                            <div class="row">
+                                                <div class="col-md-1">
+
+                                                </div>
+                                                <div class="col-md-11">
+                                                    <div class="user-block">
+                                                        <img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">
+                                                        <span class="username">
+                                            <p>{{ comment.content }}</p>
+                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                        </span>
+                                                        <span class="description">Shared publicly - 7:30 PM today</span>
+                                                    </div>
+                                                    <!-- /.user-block -->
+
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.post -->
+                        {% endfor %}
                     {% endif %}
-                  <center>{% include 'paginator/paginator.html.twig' %}</center>
+                </div>
+                <div class="col-sm-2">
+                </div>
+            </div>
         </div>
     </section>
+    <div class="navigation">
+        {{ knp_pagination_render(articles, 'layout/pagination.html.twig') }}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -139,20 +158,23 @@
                     var response = xhr.responseText;
                     var data = JSON.parse(response);
                     var post = data['data'];
-                    console.log(post.user);
                     $( "#post" )
-                        .append( '<div class="card card-frame"><div class="card-header d-flex">' +
-                            '<p class="font-weight-normal my-auto">'  + '</p>' +
-                            '<i class="material-icons position-relative ms-auto text-lg me-1 my-auto">date</i>' +
-                            '<p class="text-sm my-auto"> Now</p></div>' +
+                        .append( '<div id="post"></div><div class="card"><div class="card-header"></div>' +
                             '<div class="card-body">' +
-                            '<h5>' + post.title + '</h5><p>' + post.content+ '</p></div>' +
-                            '<div class="card-footer">' +
-                            '<form>' +
-                            '<div class="input-group input-group-outline mb-4">' +
-                            '<label class="form-label">Comment</label>' +
-                            '<input type="text" class="form-control">' +
-                            '</div></form></div></div><br>' );
+                            '<div class="post">' +
+                            '<div class="user-block">' +
+                            '<img class="img-circle img-bordered-sm" src="{{ asset('adminlte/dist/img/user1-128x128.jpg') }}" alt="user image">' +
+                            '<span class="username">' +
+                            '<a href="#">' +  post.username + '</a>' +
+                            '<a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a></span>'+
+                            '<span class="description">Shared publicly - 7:30 PM today</span></div>' +
+                            '<p>' + post.content+ '</p></div>' +
+                            '<p><a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>' +
+                            '<span class="float-right">' +
+                            '<a href="#" class="link-black text-sm"><i class="far fa-comments mr-1"></i> Comments (0)' +
+                            '</a></span></p>' +
+                            '<input class="form-control form-control-sm" type="text" placeholder="Type a comment">' +
+                            '</div></div>' );
                 }
                 else {
                     successSwal('Not Saved Bro')

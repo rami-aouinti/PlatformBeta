@@ -25,7 +25,7 @@
             </div>
         {% endfor %}
 
-        {% include 'paginator/paginator.html.twig' %}
+        {% include 'layout/pagination.html.twig' %}
     {% else %}
         <div class="has-text-centered">
             <h1 class="title is-4">{{ 'home.no_article'|trans }}</h1>

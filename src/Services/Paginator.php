@@ -9,12 +9,12 @@ class Paginator
     /**
      * @var int
      */
-    private $itemPerPage;
+    private int $itemPerPage;
 
     /**
      * @var RequestStack
      */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack, $itemPerPage)
     {

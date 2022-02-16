@@ -123,3 +123,7 @@ backoffice:
     flashmessage_publish: L'article a été créé avec succès
     flashmessage_edit: L'article a été mis à jour avec succès
     flashmessage_deleted_article: L'annonce été supprimé avec succès
+  timeworks:
+    flashmessage_publish: The timework has been successfully created
+    flashmessage_edit: The timework has been successfully edited
+    flashmessage_deleted_article: The timework has been successfully deleted

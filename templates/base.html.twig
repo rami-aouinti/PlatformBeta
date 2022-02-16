@@ -34,17 +34,43 @@
             }
         </style>
         {% block stylesheets %}
+            <style>
+                .flash-notification-container {
+                    position: fixed;
+                    width: 380px;
+                    right: -380px;
+                    top: 76px;
+                    z-index: 999;
+                    -webkit-animation-name: slide-on; /* Safari 4.0 - 8.0 */
+                    -webkit-animation-duration: 1.5s; /* Safari 4.0 - 8.0 */
+                    animation-name: slide-on;
+                    animation-duration: 6s;
+                    animation-delay: 0.5s;
+                }
 
+                /* Safari 4.0 - 8.0 */
+                @-webkit-keyframes slide-on {
+                    10%   {transform: translateX(-107%)}
+                    11%, 90% {transform: translateX(-107%)}
+                    100% {transform: translateX(380px)}
+                }
+
+            </style>
         {% endblock %}
 
     </head>
-    <body class="hold-transition layout-top-nav dark-mode">
-    <div class="content-wrapper">
+    <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
         {{ include('layout/nav.html.twig') }}
+        {% include 'layout/menu.html.twig' %}
+    <div class="content-wrapper">
         {% include 'notification-translations/message.html.twig' %}
+        {% include 'flashMessage/flashMessage.html.twig' %}
         {% block body %}{% endblock %}
     </div>
-    {{ include('layout/footer.html.twig') }}
+        {{ include('layout/chat.html.twig') }}
+        {{ include('layout/footer.html.twig') }}
+    </div>
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

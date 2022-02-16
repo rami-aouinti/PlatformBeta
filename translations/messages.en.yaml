@@ -125,4 +125,8 @@ backoffice:
     flashmessage_publish: The article has been successfully created
     flashmessage_edit: The article has been successfully edited
     flashmessage_deleted_article: The article has been successfully deleted
+  timeworks:
+    flashmessage_publish: The timework has been successfully created
+    flashmessage_edit: The timework has been successfully edited
+    flashmessage_deleted_article: The timework has been successfully deleted
 

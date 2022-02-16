@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Timework;
 use App\Form\TimeworkType;
 use App\Repository\TimeworkRepository;
+use App\Services\FlashMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/timework')]
 class TimeworkController extends AbstractController
@@ -22,11 +24,17 @@ class TimeworkController extends AbstractController
     private Security $security;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $trans;
+
+    /**
      * @param Security $security
      */
-    public function __construct(Security $security)
+    public function __construct(Security $security, TranslatorInterface $trans)
     {
         $this->security = $security;
+        $this->trans = $trans;
     }
 
     #[Route('/', name: 'timework_index', methods: ['GET', 'POST'])]
@@ -35,7 +43,8 @@ class TimeworkController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         EntityManagerInterface $entityManager,
-        Security $security
+        Security $security,
+        FlashMessage $flashMessage
     ): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -48,7 +57,10 @@ class TimeworkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($timework);
             $entityManager->flush();
-
+            $flashMessage->createMessage(
+                $request,
+                FlashMessage::INFO_MESSAGE,
+                $this->trans->trans('backoffice.timework.flashmessage_publish'));
             return $this->redirectToRoute('timework_index', [], Response::HTTP_SEE_OTHER);
         }
 

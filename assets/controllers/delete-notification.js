@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 $('.delete').on('click', function () {
-    $('.notification').fadeOut("slow", function () {
-        $('.flash-notification-container').remove();
+    $('.alert').fadeOut("slow", function () {
+        $('.alert').remove();
     });
 });
